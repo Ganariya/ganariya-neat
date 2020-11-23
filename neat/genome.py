@@ -396,30 +396,42 @@ class DefaultGenome(object):
         """
         Returns the genetic distance between this genome and the other. This distance value
         is used to compute genome compatibility for speciation.
+
+        他のgenomeとの距離を計算する (genome同士の計算)
         """
 
         # Compute node gene distance component.
         node_distance = 0.0
         if self.nodes or other.nodes:
             disjoint_nodes = 0
+
+            # k2がおそらくother.nodes(ノード遺伝子)の各ノード遺伝子のKey
             for k2 in other.nodes:
                 if k2 not in self.nodes:
                     disjoint_nodes += 1
 
+
+            # k1=ノード遺伝子のキー, n1=ノード遺伝子の実体
             for k1, n1 in self.nodes.items():
                 n2 = other.nodes.get(k1)
                 if n2 is None:
                     disjoint_nodes += 1
                 else:
                     # Homologous genes compute their own distance value.
+                    # もし一致しているノード遺伝子番号ならば　その重みを計算する
+                    # つまり遺伝子同士の重みの差
                     node_distance += n1.distance(n2, config)
 
+            # ノードの最大個数
             max_nodes = max(len(self.nodes), len(other.nodes))
+
+            # ノード間の距離は 異なるノード数を平均で割る
             node_distance = (node_distance +
                              (config.compatibility_disjoint_coefficient *
                               disjoint_nodes)) / max_nodes
 
         # Compute connection gene differences.
+        # グラフネットワーク同士の辺の距離同士も計算するらしい（そうだっけ）
         connection_distance = 0.0
         if self.connections or other.connections:
             disjoint_connections = 0
@@ -439,6 +451,10 @@ class DefaultGenome(object):
             connection_distance = (connection_distance +
                                    (config.compatibility_disjoint_coefficient *
                                     disjoint_connections)) / max_conn
+
+
+        # ここにクラスタリングや　ゲーム内情報の差を入れればいい
+        # play_distance
 
         distance = node_distance + connection_distance
         return distance

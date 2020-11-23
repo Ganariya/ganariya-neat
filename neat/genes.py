@@ -87,6 +87,8 @@ class DefaultNodeGene(BaseGene):
         BaseGene.__init__(self, key)
 
     def distance(self, other, config):
+        # ノード同士の距離は　バイアスとレスポンスの絶対値の差
+        # に加えて　活性化関数や集約関数の種族によって決まる
         d = abs(self.bias - other.bias) + abs(self.response - other.response)
         if self.activation != other.activation:
             d += 1.0
