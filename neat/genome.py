@@ -418,6 +418,7 @@ class DefaultGenome(object):
                     disjoint_nodes += 1
                 else:
                     # Homologous genes compute their own distance value.
+                    # gene同士の比較
                     # もし一致しているノード遺伝子番号ならば　その重みを計算する
                     # つまり遺伝子同士の重みの差
                     node_distance += n1.distance(n2, config)
@@ -453,7 +454,8 @@ class DefaultGenome(object):
                                     disjoint_connections)) / max_conn
 
 
-        # ここにクラスタリングや　ゲーム内情報の差を入れればいい
+        # ここにクラスタリングやゲーム内情報の差を入れればいい
+        # 2つのネットワーク(genome)間のゲーム情報の差を計算する
         # play_distance
 
         distance = node_distance + connection_distance
