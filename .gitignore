@@ -16,3 +16,6 @@ __pycache__/
 venv/
 .idea/
 *.svg
+dist/
+build/
+*.egg_info
