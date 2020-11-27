@@ -18,4 +18,4 @@ venv/
 *.svg
 dist/
 build/
-*.egg_info
+ganariya_neat.egg-info/
