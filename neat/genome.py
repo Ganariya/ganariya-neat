@@ -1,7 +1,6 @@
 """Handles genomes (individuals in the population)."""
 from __future__ import division, print_function
 
-
 from itertools import count
 from random import choice, random, shuffle
 
@@ -269,15 +268,15 @@ class DefaultGenome(object):
             div = max(1, (config.node_add_prob + config.node_delete_prob +
                           config.conn_add_prob + config.conn_delete_prob))
             r = random()
-            if r < (config.node_add_prob/div):
+            if r < (config.node_add_prob / div):
                 self.mutate_add_node(config)
-            elif r < ((config.node_add_prob + config.node_delete_prob)/div):
+            elif r < ((config.node_add_prob + config.node_delete_prob) / div):
                 self.mutate_delete_node(config)
             elif r < ((config.node_add_prob + config.node_delete_prob +
-                       config.conn_add_prob)/div):
+                       config.conn_add_prob) / div):
                 self.mutate_add_connection(config)
             elif r < ((config.node_add_prob + config.node_delete_prob +
-                       config.conn_add_prob + config.conn_delete_prob)/div):
+                       config.conn_add_prob + config.conn_delete_prob) / div):
                 self.mutate_delete_connection()
         else:
             if random() < config.node_add_prob:
@@ -410,7 +409,6 @@ class DefaultGenome(object):
                 if k2 not in self.nodes:
                     disjoint_nodes += 1
 
-
             # k1=ノード遺伝子のキー, n1=ノード遺伝子の実体
             for k1, n1 in self.nodes.items():
                 n2 = other.nodes.get(k1)
@@ -453,10 +451,10 @@ class DefaultGenome(object):
                                    (config.compatibility_disjoint_coefficient *
                                     disjoint_connections)) / max_conn
 
-
-        # ここにクラスタリングやゲーム内情報の差を入れればいい
-        # 2つのネットワーク(genome)間のゲーム情報の差を計算する
         # play_distance
+        play_distance = 0
+        if hasattr(self, 'cluster_id') and hasattr(other, 'cluster_id'):
+            play_distance = int(self.cluster_id != other.cluster_id)
 
         distance = node_distance + connection_distance
         return distance
