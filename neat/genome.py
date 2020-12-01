@@ -455,6 +455,8 @@ class DefaultGenome(object):
         play_distance = 0
         if hasattr(self, 'cluster_id') and hasattr(other, 'cluster_id'):
             play_distance = int(self.cluster_id != other.cluster_id)
+        if hasattr(self, 'cluster_c'):
+            play_distance *= self.cluster_c
 
         distance = node_distance + connection_distance + play_distance
         return distance
