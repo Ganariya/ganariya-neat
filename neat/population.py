@@ -78,6 +78,9 @@ class Population(object):
         if self.config.no_fitness_termination and (n is None):
             raise RuntimeError("Cannot have no generational limit with no fitness termination")
 
+        # 最初の実行を初期化
+        fitness_function(list(self.population.items()), self.config)
+
         k = 0
         while n is None or k < n:
             k += 1
@@ -85,7 +88,7 @@ class Population(object):
             self.reporters.start_generation(self.generation)
 
             # Evaluate all genomes using the user-provided function.
-            fitness_function(list(self.population.items()), self.config)
+            # fitness_function(list(self.population.items()), self.config)
 
             # Gather and report statistics.
             best = None
@@ -125,6 +128,8 @@ class Population(object):
                 else:
                     raise CompleteExtinctionException()
 
+            # 全員の評価　種の評価のためにここに移動している
+            fitness_function(list(self.population.items()), self.config)
             # Divide the new population into species.
             self.species.speciate(self.config, self.population, self.generation)
 
