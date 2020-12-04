@@ -19,9 +19,13 @@ class StatisticsReporter(BaseReporter):
     """
     def __init__(self):
         BaseReporter.__init__(self)
+        # 各世代で最も良いゲノムが入る
         self.most_fit_genomes = []
+        # 各世代の種
+        # 種ごとに適応度が配列で入っている
         self.generation_statistics = []
 
+    # 世代ごとに外部から呼ばれる　値をプロパティに追加する
     def post_evaluate(self, config, population, species, best_genome):
         self.most_fit_genomes.append(copy.deepcopy(best_genome))
 
@@ -31,6 +35,8 @@ class StatisticsReporter(BaseReporter):
             species_stats[sid] = dict((k, v.fitness) for k, v in s.members.items())
         self.generation_statistics.append(species_stats)
 
+    # 世代ごとに　すべての個体の適応度にfを写像した値の配列aを返す
+    # a[i] = i世代目の全個体の適応度にfを写像した値
     def get_fitness_stat(self, f):
         stat = []
         for stats in self.generation_statistics:
